@@ -1,0 +1,34 @@
+name: narayan_farms_admin
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc: ^8.1.0
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.0
+  go_router: ^14.0.0
+  narayan_system_core: ^1.1.3
+  customer_relation: ^0.1.0
+  ordering: ^1.0.0
+  supply_inventory: ^1.0.0
+  delivery_workforce: ^1.0.0
+  loyalty_levels: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  bloc_test: ^9.1.0
+
+flutter:
+  uses-material-design: true
+
+dependency_overrides:
+  meta: ^1.18.0
+  test_api: ^0.7.9
