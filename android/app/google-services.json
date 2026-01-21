@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "181050022180",
+    "project_id": "narayanfarms-655a8",
+    "storage_bucket": "narayanfarms-655a8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181050022180:android:e8eb3da07d645bf6607bb1",
+        "android_client_info": {
+          "package_name": "com.example.narayan_farms_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3CBiIVlB3KhuZcaJ5MCGBwwtgpJeP-Ec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181050022180:android:6118d8e9d8e243e5607bb1",
+        "android_client_info": {
+          "package_name": "com.narayan_farms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3CBiIVlB3KhuZcaJ5MCGBwwtgpJeP-Ec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

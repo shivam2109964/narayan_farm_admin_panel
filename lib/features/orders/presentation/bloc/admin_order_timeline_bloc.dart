@@ -43,11 +43,10 @@ class AdminOrderTimelineBloc
   ) {
     if (state is! AdminOrderTimelineLoaded) return;
 
-    final currentOrders = Map<String, OrderTimelineUIModel>.fromIterable(
-      (state as AdminOrderTimelineLoaded).orders,
-      key: (order) => order.orderId,
-      value: (order) => order,
-    );
+    final currentOrders = {
+      for (var order in (state as AdminOrderTimelineLoaded).orders)
+        order.orderId: order,
+    };
 
     final e = event.event;
     final eventType = e.runtimeType.toString();

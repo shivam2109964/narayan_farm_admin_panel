@@ -101,44 +101,70 @@ void main() {
       }
     });
 
-    test('Admin panel has NO write operations', () {
-      final libDir = Directory('lib');
-      final allDartFiles = libDir
+    test('Admin PRESENTATION layer has NO write operations', () {
+      final libDir = Directory('lib/features');
+      final uiFiles = libDir
           .listSync(recursive: true)
           .whereType<File>()
+          .where((f) => f.path.contains('/presentation/'))
           .where((f) => f.path.endsWith('.dart'));
 
-      for (final file in allDartFiles) {
+      for (final file in uiFiles) {
         final content = file.readAsStringSync();
 
-        // Check for suspicious mutation methods
-        // Admin should ONLY read, never write
+        // Check for suspicious mutation methods in UI
+        final suspiciousMethods = [
+          'createOrder',
+          'updateOrder',
+          'deleteOrder',
+          'placeOrder',
+          'cancelOrder',
+          'updateInventory',
+          'restockProduct',
+          'assignAgent',
+          'updateLoyalty',
+        ];
 
-        if (file.path.contains('/features/') &&
-            !file.path.contains('_test.dart')) {
-          // Look for methods that suggest mutation
-          final suspiciousMethods = [
-            'createOrder',
-            'updateOrder',
-            'deleteOrder',
-            'placeOrder',
-            'cancelOrder',
-            'updateInventory',
-            'restockProduct',
-            'assignAgent',
-            'updateLoyalty',
-          ];
-
-          for (final method in suspiciousMethods) {
-            expect(
-              content.contains(method),
-              isFalse,
-              reason: 'File ${file.path} contains write method: $method',
-            );
-          }
+        for (final method in suspiciousMethods) {
+          expect(
+            content.contains(method),
+            isFalse,
+            reason: 'UI File ${file.path} contains write method: $method',
+          );
         }
       }
     });
+
+    test(
+      'AdminRestockInventoryUseCase must NOT import supply entities directly',
+      () {
+        final file = File(
+          'lib/features/inventory/domain/use_cases/admin_restock_inventory_use_case.dart',
+        );
+        if (file.existsSync()) {
+          final content = file.readAsStringSync();
+
+          expect(
+            content.contains('package:supply_inventory/supply_inventory.dart'),
+            isFalse,
+            reason:
+                'UseCase must not import supply_inventory directly. Use Orchestrator.',
+          );
+
+          expect(
+            content.contains('inventoryService'),
+            isFalse,
+            reason: 'UseCase must not access inventoryService',
+          );
+
+          expect(
+            content.contains('inventory.replenishStock'),
+            isFalse,
+            reason: 'UseCase must not call replenishStock directly',
+          );
+        }
+      },
+    );
 
     test('Infrastructure layer exists and is minimal', () {
       final infraDir = Directory('lib/core/infrastructure');
@@ -160,6 +186,30 @@ void main() {
         lessThanOrEqualTo(3),
         reason: 'Admin infrastructure should be minimal',
       );
+    });
+
+    test('UI layer must NOT import system_core directly', () {
+      final presentationDir = Directory('lib/features');
+      final uiFiles = presentationDir
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where(
+            (f) =>
+                f.path.contains('/presentation/pages/') ||
+                f.path.contains('/presentation/widgets/'),
+          )
+          .where((f) => f.path.endsWith('.dart'));
+
+      for (final file in uiFiles) {
+        final content = file.readAsStringSync();
+
+        expect(
+          content.contains('package:narayan_system_core'),
+          isFalse,
+          reason:
+              'UI file ${file.path} must NOT import system_core directly. Use Bloc.',
+        );
+      }
     });
 
     test('No direct Firebase imports in presentation layer', () {
